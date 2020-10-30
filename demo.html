@@ -1,0 +1,79 @@
+<script>
+
+let arr = [
+    ["新闻","体育","网球","国外"],  
+    ["新闻","体育","网球","国内"],
+    ["产品","互联网","金融"],
+    ["新闻","房产","深圳"],
+    ["新闻","房产","上海"],
+    ["新闻","体育","羽毛球"],
+    ["产品","互联网","保险"]
+]
+
+var OBJ = {
+    '新闻': { name: '新闻', children: []}
+}
+
+let newArr = []  // 多颗树
+
+for(let i=0; i<arr.length; i++) {
+    for(let j=0; j<arr[i].length; j++) {
+        // 临时记录
+        if(!OBJ[arr[i][j]]) {
+            OBJ[arr[i][j]] = {
+                name: arr[i][j],
+                children: []
+            }
+        }
+
+        if(j!=0) {
+            // 去判断它的直接父亲的children中有没有它，没有时push进去
+            let p = OBJ[arr[i][j-1]]
+            if(p) {
+                if(p.children.indexOf(arr[i][j]) === -1) {
+                    p.children.push({
+                        name: arr[i][j],
+                        children: []
+                    })
+                }
+            }
+        }
+
+        if(j==0) {
+            newArr.push({
+                name: arr[i],
+                children: OBJ[arr[i][j]]
+            })
+        }
+
+
+    }
+}
+
+console.log('OBJ', OBJ)
+console.log('newArr', newArr)
+
+
+var res = [
+    {
+        name: '新闻',
+        children: [
+            { 
+                name: '体育',
+                children: [
+                    {
+                        name: '网球',
+                        children: [
+                            { name: '国外', children: []},
+                            { name: '国内', children: []}
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '房产'
+            }
+        ]
+    }
+]
+</script>
